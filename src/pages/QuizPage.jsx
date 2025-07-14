@@ -1,18 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../components/Button/Button.jsx';
 import Display from '../components/Display/Display.jsx';
 import quizData from '../data/quiz.js';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../const.js';
 
 export default function QuizPage() {
 
 	const [quizIndex, setQuizIndex] = useState(0); // 現在の問題のインデックス
 	const [answers, setAnswers] = useState([]); // 正誤結果を保存
-
-	//quizDataが進んだら回答の正解を配列に保存する。
-	// useEffect(() => { })
+	const totalQuestions = quizData.length; //　問題数
+	const navigate = useNavigate(); // 遷移判定用のナビゲーション
 
 	// 選択肢がクリックされたときの処理
-		const handleClick = (clickedIndex) => {
+	const handleClick = (clickedIndex) => {
 		//正誤判定
 		if (clickedIndex === quizData[quizIndex].answer) {
 			setAnswers(prev => [...prev, true]); // 正解ならtrueを追加
@@ -23,19 +24,37 @@ export default function QuizPage() {
 		setQuizIndex(prev => prev + 1);
 	}
 
+	//遷移判定
+	useEffect(() => {
+		if (quizIndex === totalQuestions) {
+			// 正当数を計算
+			const correctCount = answers.filter(answer => answer === true).length;
+			// 結果ページへ遷移
+			navigate(ROUTES.RESULT, {
+				state: {
+					totalQuestions: totalQuestions,
+					correctCount: correctCount
+				}
+			})
+		}
+	}, [answers]);
+
 	return (
 		<>
-			{/* 問題文 */}
-			<Display>
-				{`Q${quizIndex + 1}. ${quizData[quizIndex].question}`}
-			</Display>
+			{ // 問題文（現在の問題が存在する場合のみ表示）
+				quizData[quizIndex] &&
+				<Display>
+					{`Q${quizIndex + 1}. ${quizData[quizIndex].question}`}
+				</Display>
+			}
 
-			{/* 選択肢 */}
-			{quizData[quizIndex].options.map((option, index) => (
-				<Button key={index} onClick={() => { handleClick(index) }}>
-					{option}
-				</Button>
-			))}
+			{ // 選択肢（現在の問題が存在する場合のみ表示）
+				quizData[quizIndex] &&
+				quizData[quizIndex].options.map((option, index) => (
+					<Button key={index} onClick={() => { handleClick(index) }}>
+						{option}
+					</Button>))
+			}
 		</>
 	)
 }
