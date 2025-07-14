@@ -5,14 +5,21 @@ import quizData from '../data/quiz.js';
 
 export default function QuizPage() {
 
-	//handleClickでquizDataを1進めるための問題番号を状態管理する。
-	const [quizIndex, setQuizIndex] = useState(0);
+	const [quizIndex, setQuizIndex] = useState(0); // 現在の問題のインデックス
+	const [answers, setAnswers] = useState([]); // 正誤結果を保存
 
 	//quizDataが進んだら回答の正解を配列に保存する。
 	// useEffect(() => { })
 
-	//Buttonをクリックしたときの処理
-	const handleClick = (clickedIndex) => {
+	// 選択肢がクリックされたときの処理
+		const handleClick = (clickedIndex) => {
+		//正誤判定
+		if (clickedIndex === quizData[quizIndex].answer) {
+			setAnswers(prev => [...prev, true]); // 正解ならtrueを追加
+		} else {
+			setAnswers(prev => [...prev, false]); // 不正解ならfalseを追加
+		}
+		// 次の問題へ進む
 		setQuizIndex(prev => prev + 1);
 	}
 
