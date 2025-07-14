@@ -4,17 +4,17 @@ const quizData = [
 	{
 		question: 'HTMLの正式名称は？',
 		options: ['Hyper Text Markup Language', 'Hyper Text Markup Link', 'Hyper Text Markup Level'],
-		answer: 'Hyper Text Markup Language'
+		answer: 0
 	},
 	{
 		question: 'CSSの正式名称は？',
 		options: ['Cascading Style Sheet', 'Cascading Style Script', 'Cascading Style System'],
-		answer: 'Cascading Style Sheet'
+		answer: 0
 	},
 	{
 		question: 'JavaScriptの正式名称は？',
 		options: ['JavaScript', 'Java Script', 'Java Script Language'],
-		answer: 'JavaScript'
+		answer: 0
 	}
 ]
 
